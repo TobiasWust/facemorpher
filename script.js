@@ -17,8 +17,9 @@ gif.render();
 }
 
 const start = async () => {
-  let lefteye;
-  let eyedistance;
+  let reflefteye;
+  let refeyedistance;
+  let refrotation;
   imageUpload.addEventListener('change', async () => {
     [...imageUpload.files].forEach(async file => {
       const image = await faceapi.bufferToImage(file)
@@ -33,16 +34,21 @@ const start = async () => {
       const align = await resizedResults.landmarks.getRefPointsForAlignment()
       align.pop(); // dont need the mouth
 
-      if (!lefteye) lefteye = align[0];
-      if (!eyedistance) eyedistance = align[1].x - align[0].x; // pythagoras benutzen!
-      const zoom = eyedistance / (align[1].x - align[0].x);
+      if (!reflefteye) reflefteye = align[0];
+      const distance = Math.sqrt((align[1].x - align[0].x) ** 2 + (align[1].x - align[0].x) ** 2);
+      if (!refeyedistance) refeyedistance = distance;
+      const zoom = refeyedistance / (distance);
+      const rotation = Math.atan((align[1].y - align[0].y) / align[1].x - align[0].x);
+      if (!refrotation) refrotation = rotation;
+
       const alignhelper = {
-        dx: lefteye.x - align[0].x * zoom,
-        dy: lefteye.y - align[0].y * zoom,
+        dx: reflefteye.x - align[0].x * zoom,
+        dy: reflefteye.y - align[0].y * zoom,
       }
 
       console.log('alignhelper', alignhelper)
-      console.log('eyedistance', eyedistance)
+      console.log('eyedistance', refeyedistance)
+      console.log('rotation', refrotation, rotation)
 
       const ctx = canvas.getContext('2d');
       const ctx2 = canvas.getContext('2d');
@@ -56,7 +62,8 @@ const start = async () => {
       // ctx.clearRect(0, 0, canvas.width, canvas.height);  // clear canvas
       // ctx.drawImage(canvas2, lefteye.x - align[0].x, lefteye.y - align[0].y);
       // ctx.drawImage(canvas, alignhelper.dx, alignhelper.dy);
-      ctx.setTransform(alignhelper.zoom, 0, 0, alignhelper.zoom, alignhelper.dx, alignhelper.dy);
+      ctx.rotate(rotation);
+      ctx.setTransform(zoom, 0, 0, zoom, alignhelper.dx, alignhelper.dy);
       ctx.drawImage(canvas, 0, 0);
 
       // document.querySelector('#gif').append(canvas);
