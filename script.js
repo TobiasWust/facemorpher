@@ -34,11 +34,11 @@ const start = async () => {
       align.pop(); // dont need the mouth
 
       if (!lefteye) lefteye = align[0];
-      if (!eyedistance) eyedistance = align[1].x - align[0].x;
+      if (!eyedistance) eyedistance = align[1].x - align[0].x; // pythagoras benutzen!
+      const zoom = eyedistance / (align[1].x - align[0].x);
       const alignhelper = {
-        dx: lefteye.x - align[0].x * (eyedistance / (align[1].x - align[0].x)),
-        dy: lefteye.y - align[0].y * (eyedistance / (align[1].x - align[0].x)),
-        zoom: eyedistance / (align[1].x - align[0].x)
+        dx: lefteye.x - align[0].x * zoom,
+        dy: lefteye.y - align[0].y * zoom,
       }
 
       console.log('alignhelper', alignhelper)
