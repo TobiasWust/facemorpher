@@ -14,7 +14,6 @@
       margin: 0;
       padding: 0;
       width: 100vw;
-      height: 100vh;
       display: flex;
       /* justify-content: center; */
       align-items: center;
@@ -37,11 +36,17 @@
       width: 90%;
       padding: 10px;
       border-radius: 10px;
-      overflow-y:hidden;
+      overflow-y: scroll;
+      max-height: 30vh;
     }
 
     #log p {
       margin: 0;
+      font-weight: normal;
+    }
+
+    p {
+      font-weight: bold;
     }
 
     canvas {
@@ -63,6 +68,7 @@
 </head>
 <body>
   <h1>Face Morpher</h1>
+  <p>Select images. We will align the eyes and make a gif. Nothing will be uploaded. It`s all processed on your device.</p>
     <form>
       <input type="file" id="imageUpload" multiple>
       <input type="range" id="delay" min="50" max="3000" value="200" step="50.0"><label for="delay"></label>
@@ -71,5 +77,6 @@
     </form>
   <div id="gif"></div>
   <div id="log"></div>
+  <p>🐏 https://www.tobiaswust.de 🐏</p>
 </body>
 </html>
