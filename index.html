@@ -15,14 +15,22 @@
       padding: 0;
       width: 100vw;
       display: flex;
-      /* justify-content: center; */
+      min-height: 100vh;
+      justify-content: space-between;
       align-items: center;
       flex-direction: column;
       background: #7dc2ad;
       font-family: sans-serif;
     }
 
-    body>* {
+    main, footer {
+      display: flex;
+      /* justify-content: center; */
+      align-items: center;
+      flex-direction: column;
+    }
+
+    main>*, footer>* {
       margin: 0.2em;
     }
 
@@ -67,16 +75,22 @@
   </style>
 </head>
 <body>
-  <h1>Face Morpher</h1>
-  <p>Select images. We will align the eyes and make a gif. Nothing will be uploaded. It`s all processed on your device.</p>
-    <form>
-      <input type="file" id="imageUpload" multiple>
-      <input type="range" id="delay" min="50" max="3000" value="200" step="50.0"><label for="delay"></label>
-      <div><input type="checkbox" id="debug"><label for="debug">mark eyes</label></div>
-      <input id="doMagic" type="button" value="doMagic">
-    </form>
-  <div id="gif"></div>
-  <div id="log"></div>
-  <p>🐏 <a href="https://www.tobiaswust.de">https://www.tobiaswust.de</a> 🐏</p>
+  <main>
+    <h1>Face Morpher</h1>
+    <p>Select images. We will align the eyes and make a gif. Nothing will be uploaded. It`s all processed on your device.</p>
+      <form>
+        <input type="file" id="imageUpload" multiple>
+        <input type="range" id="delay" min="50" max="3000" value="200" step="50.0"><label for="delay"></label>
+        <div><input type="checkbox" id="debug"><label for="debug">mark eyes</label></div>
+        <input id="doMagic" type="button" value="doMagic">
+      </form>
+    
+    <div id="gif"></div>
+    <div id="log"></div>
+    </main>
+  <footer>
+    <p>🐏 <a href="https://www.tobiaswust.de">https://www.tobiaswust.de</a> 🐏</p>
+    <p>🐏 <a href="https://github.com/TobiasWust/facemorpher">https://github.com/TobiasWust/facemorpher</a> 🐏</p>
+  </footer>
 </body>
 </html>
