@@ -36,6 +36,8 @@ async function doMagic() {
   let reflefteye;
   let refeyedistance;
   let refrotation;
+  let width;
+  let height;
 
   gif = new GIF({
     workers: 2,
@@ -52,7 +54,10 @@ async function doMagic() {
   await asyncForEach([...imageUpload.files], async file => {
     const image = await faceapi.bufferToImage(file)
     const canvas = faceapi.createCanvasFromMedia(image)
-    
+
+    if (!width) width = canvas.width; else canvas.width = width;
+    if (!height) height = canvas.height; else canvas.height = height;
+
     const displaySize = { width: image.width, height: image.height }
     const detectionWithLandmarks = await faceapi
     .detectSingleFace(image)
@@ -78,6 +83,13 @@ async function doMagic() {
 
     const ctx = canvas.getContext('2d');
 
+    ctx.transform(1, 0, 0, 1, alignhelper.dx, alignhelper.dy); // align left eyes
+    ctx.translate(align[0].x, align[0].y); // rotate around left eye
+    ctx.rotate(refrotation - rotation);
+    ctx.transform(zoom, 0, 0, zoom, 0, 0); // zoom to fit eyedistance (around left eye);
+    ctx.translate(-(align[0].x), -(align[0].y))
+    await ctx.drawImage(image, 0, 0);
+
     if (document.querySelector('#debug').checked) { // if debug draw circle around eyes
       align.forEach(a => {
         ctx.beginPath();
@@ -87,14 +99,7 @@ async function doMagic() {
         ctx.stroke();
       })
     }
-;
 
-    ctx.transform(1, 0, 0, 1, alignhelper.dx, alignhelper.dy); // align left eyes
-    ctx.translate(align[0].x, align[0].y); // rotate around left eye
-    ctx.rotate(refrotation - rotation);
-    ctx.transform(zoom, 0, 0, zoom, 0, 0); // zoom to fit eyedistance (around left eye);
-    ctx.translate(-(align[0].x), -(align[0].y))
-    await ctx.drawImage(canvas, 0, 0);
     await gif.addFrame(canvas, {delay: delay.value});
   })
   log('makeGif');
