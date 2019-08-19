@@ -16,9 +16,31 @@
       width: 100vw;
       height: 100vh;
       display: flex;
-      justify-content: center;
+      /* justify-content: center; */
       align-items: center;
-      flex-direction: column
+      flex-direction: column;
+      background: #7dc2ad;
+      font-family: sans-serif;
+    }
+
+    body>* {
+      margin: 0.2em;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    #log {
+      background-color: lightblue;
+      border: 1px solid black;
+      width: 90%;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    #log p {
+      margin: 0;
     }
 
     canvas {
@@ -28,10 +50,25 @@
     #gif {
       position: relative;
     }
+
+    form {
+      background-color: #e8a87c;
+      display: grid;
+      padding: 1em;
+      border-radius: 10px;
+      gap: 0.5em;
+    }
   </style>
 </head>
 <body>
-  <input type="file" id="imageUpload" multiple>
+  <h1>Face Morpher</h1>
+    <form>
+      <input type="file" id="imageUpload" multiple>
+      <input type="range" id="delay" min="50" max="3000" value="200" step="50.0"><label for="delay"></label>
+      <div><input type="checkbox" id="debug"><label for="debug">debug</label></div>
+      <input id="doMagic" type="button" value="doMagic">
+    </form>
   <div id="gif"></div>
+  <div id="log"></div>
 </body>
 </html>
