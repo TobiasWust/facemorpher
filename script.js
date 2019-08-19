@@ -37,8 +37,9 @@ const start = async () => {
       if (!reflefteye) reflefteye = align[0];
       const distance = Math.sqrt((align[1].x - align[0].x) ** 2 + (align[1].x - align[0].x) ** 2);
       if (!refeyedistance) refeyedistance = distance;
-      const zoom = refeyedistance / (distance);
-      const rotation = Math.atan((align[1].y - align[0].y) / align[1].x - align[0].x);
+      const zoom = 1;
+      // const zoom = refeyedistance / (distance);
+      const rotation = Math.atan((align[1].y - align[0].y) / (align[1].x - align[0].x));
       if (!refrotation) refrotation = rotation;
 
       const alignhelper = {
@@ -46,28 +47,33 @@ const start = async () => {
         dy: reflefteye.y - align[0].y * zoom,
       }
 
-      console.log('alignhelper', alignhelper)
-      console.log('eyedistance', refeyedistance)
-      console.log('rotation', refrotation, rotation)
+      // console.log('alignhelper', alignhelper)
+      // console.log('eyedistance', refeyedistance)
+      // console.log('rotation', refrotation, rotation)
 
       const ctx = canvas.getContext('2d');
       const ctx2 = canvas.getContext('2d');
-      // align.forEach(a => {
-      //   ctx.beginPath();
-      //   ctx.fillStyle = '#FF0000';
-      //   ctx.arc(a.x, a.y, 20, 0, 2 * Math.PI);
-      //   ctx.fill();
-      //   ctx.stroke();
-      // });
-      // ctx.clearRect(0, 0, canvas.width, canvas.height);  // clear canvas
-      // ctx.drawImage(canvas2, lefteye.x - align[0].x, lefteye.y - align[0].y);
-      // ctx.drawImage(canvas, alignhelper.dx, alignhelper.dy);
-      ctx.rotate(rotation);
-      ctx.setTransform(zoom, 0, 0, zoom, alignhelper.dx, alignhelper.dy);
-      ctx.drawImage(canvas, 0, 0);
 
+      align.forEach(a => {
+        ctx.beginPath();
+        ctx.fillStyle = '#FF0000';
+        ctx.arc(a.x, a.y, 20, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+      });
+      // ctx.clearRect(0, 0, canvas.width, canvas.height);  // clear canvas
+      // ctx.drawImage(canvas2, reflefteye.x - align[0].x, lefteye.y - align[0].y);
+      // ctx.drawImage(canvas, alignhelper.dx, alignhelper.dy);
+
+      console.log(align[0].x )
+      ctx.translate(align[0].x, align[0].y)
+      ctx.rotate(refrotation - rotation);
+      ctx.translate(-(align[0].x), -(align[0].y))
+      ctx.transform(zoom, 0, 0, zoom, alignhelper.dx, alignhelper.dy);
+      ctx.drawImage(canvas, 0, 0);
+      
       // document.querySelector('#gif').append(canvas);
-      gif.addFrame(canvas, {delay: 500});
+      gif.addFrame(canvas, {delay: 1000});
     })
   })
 }
