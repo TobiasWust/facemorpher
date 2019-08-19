@@ -23,6 +23,7 @@ function log(text) {
   const p = document.createElement('p');
   p.innerText = text;
   document.querySelector('#log').append(p);
+  p.scrollIntoView();
 }
 
 async function asyncForEach(array, callback) {
@@ -107,6 +108,8 @@ function addEventListeners() {
   })
   document.querySelector('#doMagic').addEventListener('click', () => doMagic());
 }
+
+log('loading faceapi. please wait');
 
 Promise.all([
   faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
