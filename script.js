@@ -42,7 +42,11 @@ async function doMagic() {
   });
 
   document.querySelector('#gif').innerHTML = '';
-  document.querySelector('#log').innerHTML = '';
+
+  if (imageUpload.files.length < 1) {
+    log('please select images first!')
+    return;
+  }
 
   await asyncForEach([...imageUpload.files], async file => {
     const image = await faceapi.bufferToImage(file)
@@ -96,6 +100,7 @@ async function doMagic() {
   makeGif();
 }
 imageUpload.addEventListener('change', async () => {
+  log('loading images...')
   doMagic();
 })
 document.querySelector('#doMagic').addEventListener('click', () => doMagic());
