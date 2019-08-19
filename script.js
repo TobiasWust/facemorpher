@@ -99,16 +99,22 @@ async function doMagic() {
   log('makeGif');
   makeGif();
 }
-imageUpload.addEventListener('change', async () => {
-  log('loading images...')
-  doMagic();
-})
-document.querySelector('#doMagic').addEventListener('click', () => doMagic());
+
+function addEventListeners() {
+  imageUpload.addEventListener('change', async () => {
+    log('loading images...')
+    doMagic();
+  })
+  document.querySelector('#doMagic').addEventListener('click', () => doMagic());
+}
 
 Promise.all([
   faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
   faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
   faceapi.nets.ssdMobilenetv1.loadFromUri('/models')
-]).then(log('faceapi loaded'))
+]).then(() => {
+  log('faceapi loaded');
+  addEventListeners();
+})
 
 
